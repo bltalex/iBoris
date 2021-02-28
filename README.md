@@ -5,7 +5,7 @@ covid updater through boris johnsons voice and procedurally generated speeches
 
 install kivy, playsound, requests and urllib3 packages
 
-extract sound files into /snd package
+extract sound files into a /snd folder adjacent to python files
 
 run on your python interpreter of choice
 
