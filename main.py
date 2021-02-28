@@ -36,7 +36,7 @@ def threatlevel(cases,percentchange):
 
 new_cases = get_new_cases()
 weekly_change = round(percent_change(), 2)
-TL = threatlevel(a,b)
+TL = threatlevel(new_cases,weekly_change)
 
 #try sound(TL)
 app = MainApp()
