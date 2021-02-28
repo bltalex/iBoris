@@ -26,6 +26,7 @@ Builder.load_string("""
 
     CyanBoxLayout:
         orientation: 'vertical'
+        padding: 20
         
         AsyncImage:
             source: 'https://thumbs.dreamstime.com/b/boris-johnson-president-uk-giving-speech-london-uk-brexit-promise-feb-boris-johnson-president-uk-giving-speech-171297714.jpg'
@@ -34,7 +35,6 @@ Builder.load_string("""
             padding: 20
             spacing: 20
         
-            size: 0.6, 0.3
             Button:
                 text: 'Leave'
                 on_release: root.manager.current = 'leave'
@@ -48,12 +48,37 @@ Builder.load_string("""
             font_size: 40
             text_size: self.size
             halign: 'center'
+            valign: 'top'
+
+
+<LeaveScreen>:
+    CyanBoxLayout:
+        orientation: 'vertical'
+        padding: 20
+
+        Image:
+            source: 'img\exclamation-mark.png'
+
+        Label:
+            text: 'You MUST stay \\nat home!'
+            color: 'red'
+            font_size: 40
+            text_size: self.size
+            halign: 'center'
             valign: 'center'
+
+            
+        Button:
+            text: 'Back'
+            on_release: root.manager.current = 'welcome'
+            size_hint: .4, .3
+            pos_hint: {'center_x': .5, 'center_y': .5}
 
 
 <SignInScreen>:
     CyanBoxLayout:
         orientation: 'vertical'
+        padding: 20
     
         Label:
             text: 'iBoris'
@@ -81,48 +106,31 @@ Builder.load_string("""
     CyanBoxLayout:
         orientation: 'vertical'
         
+        
         BoxLayout:
-            height_hint: 0.3
         
             Button:
                 text: 'Settings'
             Button:
-                text: 'Regional Danger'
+                text: 'Threat Level'
                 on_release: root.manager.current = 'threat'
             Button:
                 text: 'Speaker'
                 on_release: root.manager.current = 'speaker'
-            Button:
-                source: 'Home'
         
         Label:
-            height_hint: 0.7
             text: 'Welcome home, the \\n place where you \\n should be!'
             color: 'black'
             font_size: 40
             halign: 'center'
-
-
-<LeaveScreen>:
-    CyanBoxLayout:
-        orientation: 'vertical'
-
-        Image:
-            source: 'img\exclamation-mark.png'
-
-
-        Label:
-            text: 'You MUST stay \\nat home!'
-            color: 'red'
-            font_size: 40
-            text_size: self.size
-            halign: 'center'
-            valign: 'center'
-
+        
+        CyanBoxLayout:
+            Button:
+                text: 'Back'
             
-        Button:
-            text: 'go back'
-            on_release: root.manager.current = 'welcome'
+            Button:
+                text: 'Home'
+                on_release: root.manager.current = 'home'
 
 
 <SpeakerScreen>
@@ -140,32 +148,59 @@ Builder.load_string("""
             halign: 'center'
             color: 'black'
             font_size: 40
-
-<ThreatScreen>:
-    CyanBoxLayout:
-        orientation: 'vertical'
-    
+            size_hint: 
+        
         CyanBoxLayout:
             Button:
-                text: 'Back'
+                text: 'Threat Level'
+                on_release:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'threat'
             
             Button:
                 text: 'Home'
                 on_release:
                     root.manager.transition.direction = 'left'
                     root.manager.current = 'home'
-            
-<SettingScreen>:
+
+<ThreatScreen>:
     CyanBoxLayout:
         orientation: 'vertical'
         
+        Button:
+            text: 'Press here to hear my speech!'
+            font_size: 20
+            on_release: root.manager.current = 'speaker'
         
-        
-        
+        Label:
+            text: f'There are {root.cases} new cases in the UK\\n\
+                    The weekly variation between last week and this week is {root.change}\\n\
+                    The threatlevel is {root.threatlevel}\\n\
+                    Better to stay at home!'
+            halign: 'center'
+            font_size: 20
+            color: 'black'
+    
+        CyanBoxLayout:
+            Button:
+                text: 'Back'
+                on_release:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'home'
+            
+            Button:
+                text: 'Home'
+                on_release:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'home'
 """)
 
 
 class WelcomeScreen(Screen):
+    pass
+
+
+class LeaveScreen(Screen):
     pass
 
 
@@ -176,8 +211,6 @@ class SignInScreen(Screen):
 class HomeScreen(Screen):
     pass
 
-class LeaveScreen(Screen):
-    pass
 
 class BackgroundColor(BoxLayout):
     pass
@@ -192,174 +225,33 @@ class SpeakerScreen(Screen):
 
 
 class ThreatScreen(Screen):
-  pass
+    cases = new_cases
+    change = weekly_change
+    threatlevel = TL
 
-class SettingScreen(Screen):
     pass
 
 
 class MainApp(App):
     # create test app class, use inheritance from kivy's App
-    def set_threatlevel(self, tl):
-        self.threatlevel = tl
+    def set_data(self, cases, change, tl):
+        self.cases, self.change, self.threatlevel = cases, change, tl
         return self
 
     def build(self):
         # create screen manager
         sm = ScreenManager()
         sm.add_widget(WelcomeScreen(name="welcome"))
+        sm.add_widget(LeaveScreen(name="leave"))
         sm.add_widget(SignInScreen(name="signin"))
         sm.add_widget(HomeScreen(name="home"))
-        sm.add_widget(LeaveScreen(name="leave"))
+
         speaker = SpeakerScreen(name="speaker")
         speaker.threatlevel = self.threatlevel
         sm.add_widget(speaker)
-        sm.add_widget(ThreatScreen(name="threat"))
+
+        threat = ThreatScreen(name="threat")
+        threat.cases, threat.change, threat.threatlevel = self.cases, self.change, self.threatlevel
+        sm.add_widget(threat)
 
         return sm
-
-
-
-
-
-
-
-"""
-Home Screen: 
-cyan colourbackground: #B1FFF1;
-
-/* boris-johnson-president-uk-giving-speech-london-uk-brexit-promise-feb-boris-johnson-president-uk-giving-speech-171297714 1 */
-
-
-position: absolute;
-width: 330px;
-height: 283px;
-left: 22px;
-top: 51px;
-
-background: url(boris-johnson-president-uk-giving-speech-london-uk-brexit-promise-feb-boris-johnson-president-uk-giving-speech-171297714.jpg);
-filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-backdrop-filter: blur(4px);
-/* Note: backdrop-filter has minimal browser support */
-
-border-radius: 116px;
-height: 283px;
-width: 330px;
-left: 22px;
-top: 51px;
-border-radius: 116px;
-
-Rectangle 1:
-height: 44px;
-width: 130px;
-left: 52px;
-top: 391px;
-border-radius: 25px;
-
-Text Leave: 
-height: 32px;
-width: 101px;
-left: 67px;
-top: 397px;
-border-radius: nullpx;
-
-Rectangle 2
-height: 44px;
-width: 130px;
-left: 192px;
-top: 391px;
-border-radius: 25px;
-
-
-
-/* Remain */
-height: 32px;
-width: 101px;
-left: 206px;
-top: 397px;
-border-radius: nullpx;
-
-position: absolute;
-width: 101px;
-height: 32px;
-left: 206px;
-top: 397px;
-
-font-family: Roboto;
-font-style: normal;
-font-weight: 500;
-font-size: 24px;
-line-height: 28px;
-text-align: center;
-
-color: #484646;
-
-/* Gray 3 */
-
-border: 1px solid #828282;
-
-/* Hello! This is iBoris, your virtual bodyguard! */
-
-
-position: absolute;
-width: 243px;
-height: 113px;
-left: 69px;
-top: 491px;
-
-font-family: Roboto;
-font-style: normal;
-font-weight: 500;
-font-size: 28px;
-line-height: 33px;
-text-align: center;
-
-color: #484646;
-
-letter-spacing: 0em;
-
-
-/* Battery icons
-FULL 
-
-<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-
-Status 4 bars 
-
-<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-
-Status 3 bars
-<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-
-/* You must stay at home page */
-/*Exclamation mark*/
-height: 180px;
-width: 180px;
-left: 98px;
-top: 207px;
-border-radius: 0px;
-position: absolute;
-
-/* You must stay at home! */
-
-
-position: absolute;
-width: 242px;
-height: 101px;
-left: 67px;
-top: 447px;
-
-font-family: Roboto;
-font-style: normal;
-font-weight: bold;
-font-size: 36px;
-line-height: 42px;
-text-align: center;
-
-color: #E2574C;
-
-Battery 1 status
-<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-
-
-"""
