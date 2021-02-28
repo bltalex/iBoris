@@ -14,5 +14,8 @@ run on your python interpreter of choice
 
 instructions for use:
 follow any buttons to your hearts content
-press the big red button for all your boris needs
+
+go to regional danger for an informative update on covid in england
+
+go to speech and click the big red button for a more interpretive update
 <3 have fun
