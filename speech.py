@@ -20,6 +20,7 @@ GS_files = [
 ]
 
 GS_files = [f"snd\{i}" for i in GS_files]  # add folder location before every filename
+GS_files = [i.replace(".wav",".mp3") for i in GS_files]
 
 # Speech opening
 IS_files = [
@@ -34,6 +35,7 @@ IS_files = [
 ]
 
 IS_files = [f"snd\{i}" for i in IS_files]
+IS_files = [i.replace(".wav",".mp3") for i in IS_files]
 
 # Main body - measures
 MS_files = [
@@ -49,6 +51,7 @@ MS_files = [
 ]
 
 MS_files = [f"snd\{i}" for i in MS_files]
+MS_files = [i.replace(".wav",".mp3") for i in MS_files]
 
 # CN files are connectives
 CN_files = [
@@ -73,6 +76,7 @@ CN_files = [
 ]
 
 CN_files = [f"snd\{i}" for i in CN_files]
+CN_files = [i.replace(".wav",".mp3") for i in CN_files]
 
 CC_files = [
   "CC_1 - NHS Vaccines_addnumber.wav",
@@ -81,6 +85,7 @@ CC_files = [
 ]
 
 CC_files = [f"snd\{i}" for i in CC_files]
+CC_files = [i.replace(".wav",".mp3") for i in CC_files]
 
 #CL files, whatever they are. and some CQ also idk ahhhh ?
 CL_files = [
@@ -93,6 +98,7 @@ CL_files = [
 ]
 
 CL_files = [f"snd\{i}" for i in CL_files]
+CL_files = [i.replace(".wav",".mp3") for i in CL_files]
 
 #Numberfiles
 Numberfiles = [
@@ -100,7 +106,6 @@ Numberfiles = [
   "17.7 million.wav",
   "2.wav",
   "27000.wav",
-  "350 million.wav",
   "80000.wav",
   "Fifty.wav",
   "Seventy.wav",
@@ -108,6 +113,7 @@ Numberfiles = [
 ]
 
 Numberfiles = [f"snd\{i}" for i in Numberfiles]
+Numberfiles = [i.replace(".wav",".mp3") for i in Numberfiles]
 
 Placefiles = [
   "classrooms.wav",
@@ -120,6 +126,7 @@ Placefiles = [
 ]
 
 Placefiles = [f"snd\{i}" for i in Placefiles]
+Placefiles = [i.replace(".wav",".mp3") for i in Placefiles]
 
 
 def sound(threatlevel):
@@ -139,7 +146,7 @@ def sound(threatlevel):
   placeplace = int(round(7.9999*random.random()-0.5,0))
 
   #Let the speech begin!
-  playsound.playsound("snd\START.wav")
+  playsound.playsound("snd\START.mp3")
   #Introduction
   if isn == 1:
     playsound.playsound(Numberfiles[numbernumber])
@@ -152,7 +159,7 @@ def sound(threatlevel):
   playsound.playsound(GS_files[gsna])
   #CC Statement
   if ccn == 0:
-    playsound.playsound("snd\CC_1 - NHS Vaccines_addnumber.wav")
+    playsound.playsound("snd\CC_1 - NHS Vaccines_addnumber.mp3")
     playsound.playsound(Numberfiles[numbernumbera])
   else:
     playsound.playsound(CC_files[ccn])
@@ -177,4 +184,4 @@ def sound(threatlevel):
   #general
   playsound.playsound(GS_files[gsnb])
   #end
-  playsound.playsound("snd\END.wav")
+  playsound.playsound("snd\END.mp3")
